@@ -28,7 +28,8 @@ def get_llm() -> ChatOllama:
     """Return the local Ollama LLM for generation."""
     logger.info(f"Configured LLM Model {settings.retrieval.LLM_MODEL}")
     return ChatOllama(
-        model=settings.retrieval.LLM_MODEL, 
+        model=settings.retrieval.LLM_MODEL,
+        base_url=settings.retrieval.OLLAMA_HOST 
         # temperature=0,
         # extra_body={"think": False}
     )

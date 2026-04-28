@@ -17,7 +17,9 @@ def get_retriever(collection_name: str, top_k: int = settings.retrieval.TOP_K_DE
        return _retriever
 
     logger.info(f"Initializing with {settings.embedding.MODEL} Embedding Model.")
-    embeddings = OllamaEmbeddings(model=settings.embedding.MODEL)
+    embeddings = OllamaEmbeddings(
+        model=settings.embedding.MODEL,
+        base_url=settings.retrieval.OLLAMA_HOST)
 
     logger.info(f"Loading Vectordb persist_directory {settings.vectordb.PERSIST_DIR} for collection_name {collection_name}")
     vectordb = Chroma(

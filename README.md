@@ -75,6 +75,8 @@ pip install -r requirements.txt
 ### Running the API
 
 ```bash
+export LOG_DIR=../logs/
+export VECTOR_DB_PATH="../../01-rag-ncert/01-ncert-ebooks-rag-ingestion/.vector_store"
 python main.py
 ```
 
@@ -155,3 +157,32 @@ Logs are written to both the console and a rotating file under the configured `L
 | Vector Store    | ChromaDB                              |
 | RAG Orchestration | LangChain (Agent)            |
 | Logging         | Python `logging` + `RotatingFileHandler` |
+
+
+# Run App in Containerized Env
+
+## Build Docker Image
+
+```bash
+docker build \
+  --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+  --build-arg VERSION=1.0.0 \
+  -t ncert-rag-api:1.0.0 .
+
+  docker images | grep rag
+```
+
+## Run Docker Container
+
+docker run --rm \
+  -p 80:80 \
+  --name rag-app \
+  -e VECTOR_DB_PATH=/data/vector_store \
+  -v "../../01-ncert-ebooks-rag-ingestion/.vector_store:/data/vector_store" \
+  ncert-rag-api:1.0.0
+
+## Delete Docker Images
+
+```bash
+docker image rm <image-id>
+```

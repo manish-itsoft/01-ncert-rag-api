@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 class EmbeddingConfig:
     """Embedding model used during document ingestion."""
@@ -7,25 +8,26 @@ class EmbeddingConfig:
 class VectorDBConfig:
     """ChromaDB vector store configuration."""
     TYPE = "chroma"
-    PERSIST_DIR = Path("../../01-ncert-ebooks-rag-ingestion/.vector_store")
+    PERSIST_DIR = Path(os.getenv("VECTOR_DB_PATH", "/data/vector_store"))
     COLLECTION = "ncert_ebooks"
 
 class RetrievalConfig:
     """LLM + Retriever hyperparameters."""
-    LLM_MODEL = "llama3.2:latest" #"qwen3.5:2b"
-    TOP_K_DEFAULT = 5
-    TOP_K_MIN = 1
-    TOP_K_MAX = 20
+    OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    LLM_MODEL = os.getenv("LLM_MODEL", "llama3.2:latest")
+    TOP_K_DEFAULT = int(os.getenv("TOP_K_DEFAULT", 5))
+    TOP_K_MIN = int(os.getenv("TOP_K_MIN", 1))
+    TOP_K_MAX = int(os.getenv("TOP_K_MAX", 20))
 
 class LogConfig:
     """Directory for pipeline and API logs."""
-    DIR = Path("../logs/")
+    DIR = Path(os.getenv("LOG_DIR", "/app/logs"))
 
 class FlaskAPIConfig:
     """Flask API runtime settings."""
     HOST =  "0.0.0.0"
     PORT = 80
-    DEBUG = True
+    DEBUG = False
 
     ROUTE_PREFIX =  "/api"
     ROUTE_HEALTH = "/health"
