@@ -1,0 +1,12 @@
+# Langchain dependencies
+langchain
+langchain-community
+langchain-ollama 
+
+# Vector Store
+langchain-chroma
+
+# API
+flask
+
+gunicorn
